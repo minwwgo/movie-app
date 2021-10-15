@@ -3,12 +3,16 @@ import React from "react";
 type SingleShowProps = {
   selectedShow: any;
   showDetails: any;
+  showCast: any;
 };
 
 export const Singleshow: React.FC<SingleShowProps> = ({
   selectedShow,
   showDetails,
+  showCast
 }) => {
+
+  console.log(showCast)
   return (
     <div className="max-w-7xl mx-auto p-4">
       {selectedShow && (
@@ -30,7 +34,13 @@ export const Singleshow: React.FC<SingleShowProps> = ({
               {selectedShow?.show?.summary?.replace(/<\/?[^>]+(>|$)/g, "")}
             </div>
             <div>
-              <div>Cast</div>
+              <div className="flex">
+                Cast:
+                {showCast
+                  .map((cast: any) => <div className="pl-4"> {cast.person.name} , </div>)
+                  .slice(0, 2)}
+              </div>
+
               <div>Status: {selectedShow?.show?.status}</div>
               <div>
                 Genres:{" "}
@@ -42,6 +52,7 @@ export const Singleshow: React.FC<SingleShowProps> = ({
           </div>
         </div>
       )}
+
       <div>
         <div className="grid grid-cols-5 p-4 ">
           {showDetails &&

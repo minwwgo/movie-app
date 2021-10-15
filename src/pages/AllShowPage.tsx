@@ -4,8 +4,6 @@ import { Pagetitle } from "../components/Pagetitle";
 import { Singleshow } from "../components/Singleshow";
 import { Searchbox } from "../components/Searchbox";
 import { GBshows } from "../components/GBshows";
-import useSWR from "swr";
-import { Showfetcher } from "../services/shows.service";
 
 export const AllShowPage: React.FC = () => {
   const [searchShowTerm, setSearchShowTerm] = useState("");
@@ -13,31 +11,13 @@ export const AllShowPage: React.FC = () => {
   const [showId, setShowId] = useState("");
   const [selectedShow, setSelectedShow] = useState([]);
   const [search, setSearch] = useState("");
+  const [showCast, setShowCast] = useState([]);
 
   useEffect(() => {
-    if (showId) {
-      getShowDetails(showId);
-    }
-    getShow(searchShowTerm);
+    getShow(searchShowTerm, showId);
   }, [searchShowTerm]);
 
-  // const fetchShowUrl= `https://api.tvmaze.com/search/shows?q=${searchShowTerm}`;
-
-  // const { data: showData, error } = useSWR(
-  //   searchShowTerm ? fetchShowUrl : null,
-  //   Showfetcher
-  // );
-  // if(showData){
-  //   const result = showData.filter((movie: any) =>
-  //     movie?.show?.name.toLowerCase().includes(searchShowTerm.toLowerCase())
-  //   );
-  //     setSelectedShow(result[0]);
-  //     setShowId(result[0]?.show?.id);
-  // }
-  
-
-
-  const getShow = async (showTitle: string) => {
+  const getShow = async (showTitle: string, showNumber: string) => {
     const result = await fetch(
       `https://api.tvmaze.com/search/shows?q=${showTitle}`
     )
@@ -49,16 +29,24 @@ export const AllShowPage: React.FC = () => {
       );
     setSelectedShow(result[0]);
     setShowId(result[0]?.show?.id);
-  };
 
-  const getShowDetails = async (showNumber: string) => {
-    const result = await fetch(
-      ` https://api.tvmaze.com/shows/${showNumber}/episodes`
-    )
-      .then((response) => response.json())
-      .then((data) => data);
+    if (showId) {
+      const episodeResult = await fetch(
+        ` https://api.tvmaze.com/shows/${showNumber}/episodes`
+      )
+        .then((response) => response.json())
+        .then((data) => data);
 
-    setShowDetails(result);
+      setShowDetails(episodeResult);
+
+      const castResult = await fetch(
+        `https://api.tvmaze.com/shows/${showNumber}/cast`
+      )
+        .then((response) => response.json())
+        .then((data) => data);
+
+      setShowCast(castResult);
+    }
   };
 
   return (
@@ -78,7 +66,11 @@ export const AllShowPage: React.FC = () => {
         </div>
       </div>
       {searchShowTerm.length > 0 && (
-        <Singleshow selectedShow={selectedShow} showDetails={showDetails} />
+        <Singleshow 
+        selectedShow={selectedShow} 
+        showDetails={showDetails}
+        showCast={showCast}
+         />
       )}
       {searchShowTerm.length < 1 && <GBshows />}
     </div>
