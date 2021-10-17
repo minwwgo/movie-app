@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { getShows, getSingleShow } from "../services/shows.service";
+
 import { Pagetitle } from "../components/Pagetitle";
 import { Singleshow } from "../components/Singleshow";
 import { Searchbox } from "../components/Searchbox";
@@ -8,45 +10,24 @@ import { GBshows } from "../components/GBshows";
 export const AllShowPage: React.FC = () => {
   const [searchShowTerm, setSearchShowTerm] = useState("");
   const [showDetails, setShowDetails] = useState([]);
-  const [showId, setShowId] = useState("");
-  const [selectedShow, setSelectedShow] = useState([]);
-  const [search, setSearch] = useState("");
-  const [showCast, setShowCast] = useState([]);
+  const [showId, setShowId] = useState<number>();
 
   useEffect(() => {
-    getShow(searchShowTerm, showId);
-  }, [searchShowTerm]);
-
-  const getShow = async (showTitle: string, showNumber: string) => {
-    const result = await fetch(
-      `https://api.tvmaze.com/search/shows?q=${showTitle}`
-    )
-      .then((response) => response.json())
-      .then((data) =>
-        data?.filter((movie: any) =>
-          movie?.show?.name.toLowerCase().includes(showTitle.toLowerCase())
-        )
-      );
-    setSelectedShow(result[0]);
-    setShowId(result[0]?.show?.id);
-
     if (showId) {
-      const episodeResult = await fetch(
-        ` https://api.tvmaze.com/shows/${showNumber}/episodes`
-      )
-        .then((response) => response.json())
-        .then((data) => data);
-
-      setShowDetails(episodeResult);
-
-      const castResult = await fetch(
-        `https://api.tvmaze.com/shows/${showNumber}/cast`
-      )
-        .then((response) => response.json())
-        .then((data) => data);
-
-      setShowCast(castResult);
+      getShow(showId);
     }
+  }, [showId]);
+
+  const getShow = async (Id: number) => {
+    const selectedShowDetail = await getSingleShow(Id);
+    setShowDetails(selectedShowDetail);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const getShow = await getShows(searchShowTerm);
+
+    setShowId(getShow.show.id);
   };
 
   return (
@@ -59,19 +40,13 @@ export const AllShowPage: React.FC = () => {
             <Searchbox
               searchShowTerm={searchShowTerm}
               setSearchShowTerm={setSearchShowTerm}
-              search={search}
-              setSearch={setSearch}
+              handleSubmit={handleSubmit}
             />
           </div>
         </div>
       </div>
-      {searchShowTerm.length > 0 && (
-        <Singleshow 
-        selectedShow={selectedShow} 
-        showDetails={showDetails}
-        showCast={showCast}
-         />
-      )}
+
+      {searchShowTerm.length > 0 && <Singleshow showDetails={showDetails} />}
       {searchShowTerm.length < 1 && <GBshows />}
     </div>
   );
