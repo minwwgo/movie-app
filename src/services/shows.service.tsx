@@ -1,18 +1,21 @@
-export const APP_API_URL = "https://api.tvmaze.com/schedule";
+import {today} from "../useCases/utils"
 
-const today = new Date();
-const date =
-  today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+export const TVMAZE_API_URL = "https://api.tvmaze.com";
 
-export const API_GET_SHOWS_GB_TODAY = `${APP_API_URL}?country=GB&date=${date}`;
+export const GB_SHOWS_URL = `${
+  TVMAZE_API_URL as string
+}/schedule?country=GB&date=${today}`;
 
-export const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const GET_SHOW_URL = (showTitle: string) =>
+  `${TVMAZE_API_URL as string}/search/shows?q=${showTitle}`;
 
-const getShowsApi = (showTitle: string) =>
-  `https://api.tvmaze.com/search/shows?q=${showTitle}`;
+const GET_SINGLE_SHOW_URL = (showId: number) =>
+  `${
+    TVMAZE_API_URL as string
+  }/shows/${showId}?embed[]=cast&embed[]=seasons&embed[]=episodes`;
 
 export const getShows = async (showTitle: string) => {
-  return await fetch(getShowsApi(showTitle), { method: "GET" })
+  return await fetch(GET_SHOW_URL(showTitle), { method: "GET" })
     .then((res) => res.json())
     .then(
       (data) =>
@@ -22,11 +25,8 @@ export const getShows = async (showTitle: string) => {
     );
 };
 
-const getSingleShowApi = (showId: number) =>
-  `http://api.tvmaze.com/shows/${showId}?embed[]=cast&embed[]=seasons&embed[]=episodes`;
-
 export const getSingleShow = async (showId: number) => {
-  return await fetch(getSingleShowApi(showId), { method: "GET" }).then((res) =>
-    res.json()
+  return await fetch(GET_SINGLE_SHOW_URL(showId), { method: "GET" }).then(
+    (res) => res.json()
   );
 };

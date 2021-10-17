@@ -1,5 +1,6 @@
 import React from "react";
 
+
 type SingleShowProps = {
   showDetails: any;
 };
@@ -44,7 +45,10 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
       <div>
         {seasons?.map((cast: any) => (
           <div>
-            <div className="my-4 font-bold text-2xl"> Season : {cast.number}</div>
+            <div className="my-4 font-bold text-2xl">
+              {" "}
+              Season : {cast.number}
+            </div>
 
             <div className="grid grid-cols-5">
               {episodes &&

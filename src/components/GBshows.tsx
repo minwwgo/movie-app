@@ -1,15 +1,14 @@
 import React from "react";
 import useSWR from "swr";
-import {
-  fetcher,
-  API_GET_SHOWS_GB_TODAY,
-} from "../services/shows.service";
+import { fetcher } from "../useCases/utils";
+import { GB_SHOWS_URL } from "../services/shows.service";
 import defaultImage from "../image/defaultImage.jpeg";
 
 export const GBshows: React.FC = () => {
-  
+console.log(GB_SHOWS_URL);
+
   const { data: gbShowList, error: errorUkShow } = useSWR(
-    API_GET_SHOWS_GB_TODAY,
+    GB_SHOWS_URL,
     fetcher
   );
 
