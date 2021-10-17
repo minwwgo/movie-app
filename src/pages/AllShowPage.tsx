@@ -32,7 +32,7 @@ export const AllShowPage: React.FC = () => {
 
   return (
     <div className="w-full h-full">
-      <Pagetitle text={searchShowTerm ? "Media details" : "Media search"} />
+      <Pagetitle text={showId ? "Media details" : "Media search"} />
       <div className="border-gray-900 border-solid border-2 mb-4">
         <div className="max-w-7xl mx-auto p-4 ">
           <div className="grid grid-cols-2 items-center ">
@@ -46,8 +46,7 @@ export const AllShowPage: React.FC = () => {
         </div>
       </div>
 
-      {searchShowTerm.length > 0 && <Singleshow showDetails={showDetails} />}
-      {searchShowTerm.length < 1 && <GBshows />}
+      {showId ? <Singleshow showDetails={showDetails} /> : <GBshows />}
     </div>
   );
 };
