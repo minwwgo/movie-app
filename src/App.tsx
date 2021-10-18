@@ -10,7 +10,7 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <div>
-        <Pagetitle text={"Media search"} />
+        <Pagetitle  />
         <SectionContent />
         <Switch>
           <Route path="/" component={AllShowPage} exact />
