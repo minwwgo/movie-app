@@ -16,7 +16,6 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
     <div className="max-w-7xl mx-auto p-4">
       {showDetails && (
         <div className="grid grid-cols-4 gap-8">
-          {}
           <img
             className="h-72 w-56 rounded-lg"
             src={imgSrc ? imgSrc : defaultImage}
@@ -34,7 +33,7 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
                   Cast:
                   {casts
                     ?.map((cast: any) => (
-                      <div key={cast?.person?.name} className="pl-4">
+                      <div key={cast?.person?.id} className="pl-4">
                         {cast?.person?.name}
                       </div>
                     ))
@@ -50,28 +49,27 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
       )}
       <div>
         {seasons?.map((cast: any) => (
-          <div key={cast.number}>
+          <div key={cast.id}>
             <div className="my-4 font-bold text-2xl">
               Season : {cast.number}
             </div>
 
-            <div className="grid grid-cols-5">
-              {episodes &&
-                episodes?.map((episode: any) => {
-                  return (
-                    <div key={episode.id}>
-                      {episode.season === cast.number && (
-                        <div className="m-2">
+            <div>
+              <div className="grid grid-cols-5 gap-4">
+                {episodes &&
+                  episodes?.map(
+                    (episode: any) =>
+                      episode.season === cast.number && (
+                        <div key={episode.id}>
                           <img
                             className="h-32 w-56 "
                             src={episode?.image?.original ?? defaultImage}
                             alt="Movie poster"
                           />
                         </div>
-                      )}
-                    </div>
-                  );
-                })}
+                      )
+                  )}
+              </div>
             </div>
           </div>
         ))}
