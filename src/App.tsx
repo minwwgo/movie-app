@@ -14,7 +14,7 @@ const App: React.FC = () => {
         <SectionContent />
         <Switch>
           <Route path="/" component={AllShowPage} exact />
-          <Route path="/:id" component={SearchShowPage} />
+          <Route path="/show/:id/:searchShow" component={SearchShowPage} />
         </Switch>
         <Footer />
       </div>

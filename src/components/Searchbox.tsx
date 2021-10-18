@@ -12,7 +12,7 @@ export const Searchbox: React.FC = () => {
 
     const getShow = await searchShows(searchShowTerm);
 
-    history.push(`/${getShow.show.id}`);
+    history.push(`/show/${getShow.show.id}/${searchShowTerm}`);
   };
 
   return (
