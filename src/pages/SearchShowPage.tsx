@@ -2,10 +2,10 @@ import React from "react";
 import useSWR from "swr";
 import { SEARCH_SINGLE_SHOW_URL } from "../services/shows.service";
 import { fetcher } from "../useCases/utils";
-import { Singleshow } from "./Singleshow";
+import { Singleshow } from "../components/Singleshow";
 
 
-export const SearchShow: React.FC = ({ match }: any) => {
+export const SearchShowPage: React.FC = ({ match }: any) => {
   const { id } = match?.params;
 
   const searchShowUrl = SEARCH_SINGLE_SHOW_URL(id);
