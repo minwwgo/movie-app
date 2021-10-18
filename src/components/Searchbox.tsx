@@ -1,29 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
+import { searchShows } from "../services/shows.service";
 
-type SearchboxProps = {
-  searchShowTerm: string;
-  setSearchShowTerm: Function;
-  search:string;
-  setSearch:Function;
-  
-};
+export const Searchbox: React.FC = () => {
+  const [searchShowTerm, setSearchShowTerm] = useState("");
+  const history = useHistory();
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-export const Searchbox: React.FC<SearchboxProps> = ({
-  searchShowTerm,
-  setSearchShowTerm,
-  search,
-  setSearch
-  
-}) => {
+    const getShow = await searchShows(searchShowTerm);
+
+    history.push(`/${getShow.show.id}`);
+  };
+
   return (
-    <div className="p-8">
+    <form className="p-8" onSubmit={(e) => handleSubmit(e)}>
       <div className="bg-white flex items-center rounded-full shadow-xl">
         <div className="p-4">
-          <button 
-          onClick={() => setSearch("")}
-          className="bg-gray-300 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center">
+          <button
+            type="submit"
+            className="bg-gray-300 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center"
+          >
             <svg
               className="w-6 h-6"
               fill="none"
@@ -44,11 +43,11 @@ export const Searchbox: React.FC<SearchboxProps> = ({
           placeholder="Search"
           value={searchShowTerm}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            const showTitle = event.target?.value?.toLowerCase();
-            setSearchShowTerm(showTitle);
+            const searchTitle = event.target?.value?.toLowerCase();
+            setSearchShowTerm(searchTitle);
           }}
         />
       </div>
-    </div>
+    </form>
   );
 };
