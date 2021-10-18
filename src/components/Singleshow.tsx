@@ -1,4 +1,5 @@
 import React from "react";
+import defaultImage from "../image/defaultImage.jpeg";
 
 type SingleShowProps = {
   showDetails: any;
@@ -9,14 +10,16 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
   const casts = showDetails?._embedded?.cast;
   const episodes = showDetails?._embedded?.episodes;
   const seasons = showDetails?._embedded?.seasons;
+  const imgSrc = `${image?.medium} ` ?? `${image?.original}`;
 
   return (
     <div className="max-w-7xl mx-auto p-4">
       {showDetails && (
         <div className="grid grid-cols-4 gap-8">
+          {}
           <img
             className="h-72 w-56 rounded-lg"
-            src={image?.medium ?? image?.original}
+            src={imgSrc ? imgSrc : defaultImage}
             alt="Movie Poster"
           />
           <div className="col-span-3">
@@ -26,16 +29,18 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
             </div>
             <div>{summary?.replace(/<\/?[^>]+(>|$)/g, "")}</div>
             <div>
-              <div className="flex">
-                Cast:
-                {casts
-                  ?.map((cast: any) => (
-                    <div key={cast?.person?.name} className="pl-4">
-                      {cast?.person?.name}{" "}
-                    </div>
-                  ))
-                  .slice(0, 2)}
-              </div>
+              {casts.length > 1 ? (
+                <div className="flex">
+                  Cast:
+                  {casts
+                    ?.map((cast: any) => (
+                      <div key={cast?.person?.name} className="pl-4">
+                        {cast?.person?.name}
+                      </div>
+                    ))
+                    .slice(0, 2)}
+                </div>
+              ) : null}
 
               <div>Status: {status}</div>
               <div>Genres: {genres?.map((genre: any) => genre).join(",")}</div>
@@ -59,7 +64,7 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
                         <div className="m-2">
                           <img
                             className="h-32 w-56 "
-                            src={episode?.image?.original}
+                            src={episode?.image?.original ?? defaultImage}
                             alt="Movie poster"
                           />
                         </div>

@@ -3,9 +3,7 @@ import useSWR from "swr";
 import { SEARCH_SINGLE_SHOW_URL } from "../services/shows.service";
 import { fetcher } from "../useCases/utils";
 import { Singleshow } from "./Singleshow";
-import { Pagetitle } from "../components/Pagetitle";
-import { SectionContent } from "../components/SectionContent";
-import { Footer } from "../components/Footer";
+
 
 export const SearchShow: React.FC = ({ match }: any) => {
   const { id } = match?.params;
@@ -18,12 +16,5 @@ export const SearchShow: React.FC = ({ match }: any) => {
 
   if (!showDetails) return <div>loading...</div>;
 
-  return (
-    <div>
-      <Pagetitle text={"Media Details"} />
-      <SectionContent />
-      {showDetails && <Singleshow showDetails={showDetails} />}
-      <Footer />
-    </div>
-  );
+  return <div>{showDetails && <Singleshow showDetails={showDetails} />}</div>;
 };
