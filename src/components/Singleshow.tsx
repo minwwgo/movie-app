@@ -1,6 +1,5 @@
 import React from "react";
 
-
 type SingleShowProps = {
   showDetails: any;
 };
@@ -10,7 +9,7 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
   const casts = showDetails?._embedded?.cast;
   const episodes = showDetails?._embedded?.episodes;
   const seasons = showDetails?._embedded?.seasons;
-  console.log(episodes);
+
   return (
     <div className="max-w-7xl mx-auto p-4">
       {showDetails && (
@@ -31,7 +30,9 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
                 Cast:
                 {casts
                   ?.map((cast: any) => (
-                    <div className="pl-4"> {cast?.person?.name} </div>
+                    <div key={cast?.person?.name} className="pl-4">
+                      {cast?.person?.name}{" "}
+                    </div>
                   ))
                   .slice(0, 2)}
               </div>
@@ -44,9 +45,8 @@ export const Singleshow: React.FC<SingleShowProps> = ({ showDetails }) => {
       )}
       <div>
         {seasons?.map((cast: any) => (
-          <div>
+          <div key={cast.number}>
             <div className="my-4 font-bold text-2xl">
-              {" "}
               Season : {cast.number}
             </div>
 

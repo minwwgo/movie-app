@@ -1,20 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
+import { searchShows } from "../services/shows.service";
 
-type SearchboxProps = {
-  searchShowTerm: string;
-  setSearchShowTerm: Function;
-  handleSubmit: Function;
-};
+export const Searchbox: React.FC = () => {
+  const [searchShowTerm, setSearchShowTerm] = useState("");
+  const history = useHistory();
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-export const Searchbox: React.FC<SearchboxProps> = ({
-  searchShowTerm,
-  setSearchShowTerm,
-  handleSubmit,
-}) => {
+    const getShow = await searchShows(searchShowTerm);
+
+    history.push(`/${getShow.show.id}`);
+  };
+
   return (
-    <form className="p-8" onSubmit={(e)=>handleSubmit(e)}>
+    <form className="p-8" onSubmit={(e) => handleSubmit(e)}>
       <div className="bg-white flex items-center rounded-full shadow-xl">
         <div className="p-4">
           <button

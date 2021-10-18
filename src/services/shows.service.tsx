@@ -6,16 +6,16 @@ export const GB_SHOWS_URL = `${
   TVMAZE_API_URL as string
 }/schedule?country=GB&date=${today}`;
 
-const GET_SHOW_URL = (showTitle: string) =>
+const SEARCH_SHOW_URL = (showTitle: string) =>
   `${TVMAZE_API_URL as string}/search/shows?q=${showTitle}`;
 
-const GET_SINGLE_SHOW_URL = (showId: number) =>
+export const SEARCH_SINGLE_SHOW_URL = (showId: number) =>
   `${
     TVMAZE_API_URL as string
   }/shows/${showId}?embed[]=cast&embed[]=seasons&embed[]=episodes`;
 
-export const getShows = async (showTitle: string) => {
-  return await fetch(GET_SHOW_URL(showTitle), { method: "GET" })
+export const searchShows = async (showTitle: string) => {
+  return await fetch(SEARCH_SHOW_URL(showTitle), { method: "GET" })
     .then((res) => res.json())
     .then(
       (data) =>
@@ -25,8 +25,4 @@ export const getShows = async (showTitle: string) => {
     );
 };
 
-export const getSingleShow = async (showId: number) => {
-  return await fetch(GET_SINGLE_SHOW_URL(showId), { method: "GET" }).then(
-    (res) => res.json()
-  );
-};
+

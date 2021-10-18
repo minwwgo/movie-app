@@ -1,20 +1,16 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { GBshows } from "./components/GBshows";
-import { Singleshow } from "./components/Singleshow";
 import { AllShowPage } from "./pages/AllShowPage";
+import { SearchShow } from "./components/SearchShow";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" component={AllShowPage} exact/>
-          <Route path="/show" component={Singleshow} />
-          <Route path="/gbshow" component={GBshows} />
-        </Switch>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" component={AllShowPage} exact />
+        <Route path="/:id" component={SearchShow} />
+      </Switch>
+    </BrowserRouter>
   );
 };
 
